@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  username String      @id
+  email    String      @unique
+  password String
+  name     String
+  avatar   String      @default("default.jpg")
+  cover    String      @default("default.jpg")
+  bio      String?
+  link     String?
+  tweets   Tweet[]
+  likes    TweetLike[]
+}
+
+model Tweet {
+  id        Int         @id @default(autoincrement())
+  userTweet String
+  body      String
+  image     String?
+  createdAt DateTime    @default(now())
+  answerOf  Int         @default(0)
+  user      User        @relation(fields: [userTweet], references: [username])
+  likes     TweetLike[]
+}
+
+model TweetLike {
+  id       Int    @id @default(autoincrement())
+  userLike String
+  tweetId  Int
+  tweet    Tweet  @relation(fields: [tweetId], references: [id])
+  user     User   @relation(fields: [userLike], references: [username])
+}
+
+model Follow {
+  id          Int    @id @default(autoincrement())
+  followerId  String
+  followingId String
+}
+
+model Trend {
+  id        Int      @id @default(autoincrement())
+  hashtag   String
+  counter   Int      @default(1)
+  updatedAt DateTime @default(now())
+}
