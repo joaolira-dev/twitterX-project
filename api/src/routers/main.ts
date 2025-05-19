@@ -1,15 +1,15 @@
 import { Router } from "express";
 import * as authController from "../controllers/authController";
 import * as auth from "../middlewares/auth";
-import { privatePing } from "../controllers/privatePing";
+import * as tweetController from "../controllers/tweetController"
 
 export const router = Router();
 
 router.post("/auth/signup", authController.signup);
 router.post("/auth/signin", authController.signin)
-router.post("/auth/private", auth.privateRoute, privatePing)
 
-// router.post("/tweet")
+
+router.post("/tweet", auth.privateRoute, tweetController.postTweet)
 // router.get("/tweet/:id")
 // router.get("/tweet/:id/answers")
 // router.post("/tweet/:id/like")
