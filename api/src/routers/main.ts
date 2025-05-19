@@ -4,7 +4,7 @@ import * as authController from "../controllers/authController";
 export const router = Router();
 
 router.post("/auth/signup", authController.signup);
-// router.post("/auth/signin")
+router.post("/auth/signin", authController.signin)
 
 // router.post("/tweet")
 // router.get("/tweet/:id")
