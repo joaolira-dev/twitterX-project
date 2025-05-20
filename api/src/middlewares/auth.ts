@@ -4,10 +4,7 @@ import { findUserByUserName } from "../services/user";
 import { ExtendedRequest } from "../types/extended-request";
 
 export const privateRoute = async (req: ExtendedRequest, res: Response, next: NextFunction) => {
-  let token = ""
-  req.body !== undefined ? token = req.body : token = req.headers["authorization"] as string
-
-
+  const token = req.headers["authorization"]
 
   if (!token || token === "") {
     res.status(401).json({ notallowed: true });
@@ -15,6 +12,7 @@ export const privateRoute = async (req: ExtendedRequest, res: Response, next: Ne
   }
 
   const username = verifyJWT(token)
+  
   
 
 
