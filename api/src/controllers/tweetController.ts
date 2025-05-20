@@ -2,6 +2,7 @@ import { Response } from "express";
 import { ExtendedRequest } from "../types/extended-request";
 import { postTweetSchema } from "../schemas/post-schema";
 import { createTweet, findTweet } from "../services/tweet";
+import { addHashtag } from "../services/trend";
 
 export const postTweet = async (req: ExtendedRequest, res: Response) => {
   const safeData = postTweetSchema.safeParse(req.body);
@@ -22,7 +23,20 @@ export const postTweet = async (req: ExtendedRequest, res: Response) => {
    safeData.data.body,
    safeData.data.answer ? parseInt(safeData.data.answer) : 0
   )
-  // adicionar a hashtag ao trending
+  
+  const hashtags = safeData.data.body.match(/#[a-zA-Z0-9_]+/g)
+  if(hashtags) {
+    for(let hashtag of hashtags) {
+      if(hashtags.length >= 2) {
+        await addHashtag(hashtag)
+      }
+    }
+  }
+
 
   res.json({ tweet: newTweet });
 };
+
+export const getTweet = async (req: ExtendedRequest, res: Response) => {
+  
+}
