@@ -12,7 +12,7 @@ router.post("/auth/signin", authController.signin)
 router.post("/tweet", auth.privateRoute, tweetController.postTweet)
 router.get("/tweet/:id", auth.privateRoute, tweetController.getTweet)
 router.get("/tweet/:id/answers", auth.privateRoute, tweetController.getAnswers)
-// router.post("/tweet/:id/like")
+router.post("/tweet/:id/like", auth.privateRoute, tweetController.likeToggle)
 
 // router.get("/user/:nickname")
 // router.get("/user/:nickname/tweets")
