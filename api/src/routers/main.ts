@@ -2,6 +2,7 @@ import { Router } from "express";
 import * as authController from "../controllers/authController";
 import * as auth from "../middlewares/auth";
 import * as tweetController from "../controllers/tweetController"
+import * as userController from "../controllers/userController"
 
 export const router = Router();
 
@@ -14,8 +15,8 @@ router.get("/tweet/:id", auth.privateRoute, tweetController.getTweet)
 router.get("/tweet/:id/answers", auth.privateRoute, tweetController.getAnswers)
 router.post("/tweet/:id/like", auth.privateRoute, tweetController.likeToggle)
 
-// router.get("/user/:nickname")
-// router.get("/user/:nickname/tweets")
+router.get("/user/:username", auth.privateRoute, userController.getUser)
+router.get("/user/:nickname/tweets")
 // router.post("/user/:nickname/follow")
 // router.put("/user")
 // router.put("/user/avatar")
