@@ -21,3 +21,7 @@ export const getUser = async (req: ExtendedRequest, res: Response) => {
 
    res.json({ user, followers, following, tweets })
 }
+
+export const getUserTweets = async (req: ExtendedRequest, res: Response) => {
+   
+}
