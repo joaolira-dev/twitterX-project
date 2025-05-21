@@ -66,9 +66,11 @@ export const userFollowers = async (username: string) => {
 }
 
 
-export const userTweets = async (username: string) => {
+export const countUserTweets = async (username: string) => {
    const count = await prisma.tweet.count({
       where: { userTweet: username }
    })
    return count
 }
+
+
