@@ -1,6 +1,7 @@
 import { Prisma } from "../generated/prisma";
 import { prisma } from "../helpers/prisma";
 import { getPublicURL } from "../helpers/url";
+import { Suggestion } from "../types/suggestion";
 
 export const findUserByEmail = async (email: string) => {
   const user = await prisma.user.findFirst({
@@ -125,3 +126,23 @@ export const userFollowing = async (username: string) => {
 
   return following
 };
+
+export const userSuggestions = async (username: string) => {
+  const following = await userFollowing(username)
+  const followingWithMe = [...following, username]
+
+
+  const suggestions: Suggestion[] = await prisma.$queryRaw`
+    SELECT
+      name, avatar, username
+    FROM "User"
+    WHERE
+      username NOT IN (${followingWithMe.join(",")})
+    ORDER BY RANDOM()
+    LIMIT 2;
+  `
+  for(let sugIndex in suggestions) {
+    suggestions[sugIndex].avatar = getPublicURL(suggestions[sugIndex].avatar)
+  }
+  return suggestions
+}
