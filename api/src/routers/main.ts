@@ -4,6 +4,7 @@ import * as auth from "../middlewares/auth";
 import * as tweetController from "../controllers/tweetController"
 import * as userController from "../controllers/userController"
 import * as feedController from "../controllers/feedController"
+import * as searchController from "../controllers/searchController"
 
 export const router = Router();
 
@@ -24,6 +25,6 @@ router.put("/user", auth.privateRoute, userController.editUser)
 // router.put("/user/cover")
 
 router.get("/feed", auth.privateRoute, feedController.getFeed)
-// router.get("/search")
+router.get("/search", auth.privateRoute, searchController.searchTweets)
 // router.get("/trending")
 // router.get("/suggestion")
