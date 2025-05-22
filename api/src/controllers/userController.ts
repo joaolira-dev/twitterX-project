@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { checkFollow, countUserTweets, findUserByUserName, followUser, unfollowUser, updateUserInfo, userFollowers, userFollowing } from "../services/user";
+import { checkFollow, countUserFollowers, countUserFollowing, countUserTweets, findUserByUserName, followUser, unfollowUser, updateUserInfo } from "../services/user";
 import { ExtendedRequest } from "../types/extended-request";
 import { userTweetSchema } from "../schemas/user-tweets";
 import { findTweetsByUser } from "../services/tweet";
@@ -15,8 +15,8 @@ export const getUser = async (req: ExtendedRequest, res: Response) => {
       return
    }
 
-   const followers = await userFollowers(user.username)
-   const following = await userFollowing(user.username)
+   const followers = await countUserFollowers(user.username)
+   const following = await countUserFollowing(user.username)
    const tweets = await countUserTweets(user.username)
    
 

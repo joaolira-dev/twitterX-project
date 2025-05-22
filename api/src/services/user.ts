@@ -51,14 +51,14 @@ export const createUser = async (data: Prisma.UserCreateInput) => {
   };
 };
 
-export const userFollowing = async (username: string) => {
+export const countUserFollowing = async (username: string) => {
   const count = await prisma.follow.count({
     where: { followerId: username },
   });
   return count;
 };
 
-export const userFollowers = async (username: string) => {
+export const countUserFollowers = async (username: string) => {
   const count = await prisma.follow.count({
     where: { followingId: username },
   });
@@ -110,3 +110,18 @@ export const updateUserInfo = async (username: string, data: Prisma.UserUpdateIn
     data
   })
 }
+
+export const userFollowing = async (username: string) => {
+  const following = []
+  const reqFollowing = await prisma.follow.findMany({
+    select: {
+      followingId: true
+    },
+    where: { followerId: username },
+  });
+  for(let reqItem of reqFollowing) {
+    following.push(reqItem.followingId)
+  }
+
+  return following
+};
