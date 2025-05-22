@@ -5,6 +5,7 @@ import * as tweetController from "../controllers/tweetController"
 import * as userController from "../controllers/userController"
 import * as feedController from "../controllers/feedController"
 import * as searchController from "../controllers/searchController"
+import * as trendController from "../controllers/trendController";
 
 export const router = Router();
 
@@ -26,5 +27,5 @@ router.put("/user", auth.privateRoute, userController.editUser)
 
 router.get("/feed", auth.privateRoute, feedController.getFeed)
 router.get("/search", auth.privateRoute, searchController.searchTweets)
-// router.get("/trending")
+router.get("/trending", auth.privateRoute, trendController.getTrending)
 // router.get("/suggestion")

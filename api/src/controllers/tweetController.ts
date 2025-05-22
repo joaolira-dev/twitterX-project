@@ -1,7 +1,14 @@
 import { Response } from "express";
 import { ExtendedRequest } from "../types/extended-request";
 import { postTweetSchema } from "../schemas/post-schema";
-import { checkUserLiked, createTweet, findAnswersFromTweet, findTweet, likeTweet, unlikeTweet } from "../services/tweet";
+import {
+  checkUserLiked,
+  createTweet,
+  findAnswersFromTweet,
+  findTweet,
+  likeTweet,
+  unlikeTweet,
+} from "../services/tweet";
 import { addHashtag } from "../services/trend";
 
 export const postTweet = async (req: ExtendedRequest, res: Response) => {
@@ -25,11 +32,10 @@ export const postTweet = async (req: ExtendedRequest, res: Response) => {
   );
 
   const hashtags = safeData.data.body.match(/#[a-zA-Z0-9_]+/g);
+
   if (hashtags) {
     for (let hashtag of hashtags) {
-      if (hashtags.length >= 2) {
-        await addHashtag(hashtag);
-      }
+      await addHashtag(hashtag);
     }
   }
 
@@ -52,31 +58,24 @@ export const getTweet = async (req: ExtendedRequest, res: Response) => {
   res.json({ tweet });
 };
 
-
 export const getAnswers = async (req: ExtendedRequest, res: Response) => {
-  const { id } = req.params
+  const { id } = req.params;
 
-  const answers = await findAnswersFromTweet(parseInt(id))
+  const answers = await findAnswersFromTweet(parseInt(id));
 
-  res.json({ answers })
-}
+  res.json({ answers });
+};
 
 export const likeToggle = async (req: ExtendedRequest, res: Response) => {
-  const { id } = req.params
+  const { id } = req.params;
 
-  const liked = await checkUserLiked(req.username as string , parseInt(id))
+  const liked = await checkUserLiked(req.username as string, parseInt(id));
 
-  if(liked) {
-    unlikeTweet(
-      req.username as string,
-      parseInt(id)
-    )
+  if (liked) {
+    unlikeTweet(req.username as string, parseInt(id));
   } else {
-    likeTweet(
-      req.username as string,
-      parseInt(id)
-    )
+    likeTweet(req.username as string, parseInt(id));
   }
 
-  res.json({ message: liked ? "Curtida removida" : "Curtida adicionada" })
-}
+  res.json({ message: liked ? "Curtida removida" : "Curtida adicionada" });
+};

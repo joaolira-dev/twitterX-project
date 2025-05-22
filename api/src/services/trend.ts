@@ -11,7 +11,20 @@ export const addHashtag = async (hashtag: string) => {
       })
    } else {
       await prisma.trend.create({
-         data: {hashtag}
+         data: { hashtag }
       })
    }
+}
+
+
+export const getTrendings = async () => {
+   const trends = await prisma.trend.findMany({
+      select: {
+         hashtag: true,
+         counter: true
+      },
+      orderBy: { counter: "desc" },
+      take: 4
+   })
+   return trends
 }
