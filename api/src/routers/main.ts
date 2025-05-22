@@ -17,8 +17,8 @@ router.post("/tweet/:id/like", auth.privateRoute, tweetController.likeToggle)
 
 router.get("/user/:slug", auth.privateRoute, userController.getUser)
 router.get("/user/:slug/tweets", auth.privateRoute, userController.getUserTweets)
-// router.post("/user/:username/follow")
-// router.put("/user")
+router.post("/user/:slug/follow", auth.privateRoute, userController.followToggle)
+router.put("/user", auth.privateRoute, userController.editUser)
 // router.put("/user/avatar")
 // router.put("/user/cover")
 

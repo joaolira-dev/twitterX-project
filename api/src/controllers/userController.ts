@@ -1,8 +1,9 @@
 import { Response } from "express";
-import { countUserTweets, findUserByUserName, userFollowers, userFollowing } from "../services/user";
+import { checkFollow, countUserTweets, findUserByUserName, followUser, unfollowUser, updateUserInfo, userFollowers, userFollowing } from "../services/user";
 import { ExtendedRequest } from "../types/extended-request";
 import { userTweetSchema } from "../schemas/user-tweets";
 import { findTweetsByUser } from "../services/tweet";
+import { editUserSchema } from "../schemas/edit-user";
 
 export const getUser = async (req: ExtendedRequest, res: Response) => {
    const { slug } = req.params
@@ -17,8 +18,7 @@ export const getUser = async (req: ExtendedRequest, res: Response) => {
    const followers = await userFollowers(user.username)
    const following = await userFollowing(user.username)
    const tweets = await countUserTweets(user.username)
-   console.log(tweets)
-   console.log(user.username)
+   
 
 
    res.json({ user, followers, following, tweets })
@@ -43,4 +43,42 @@ export const getUserTweets = async (req: ExtendedRequest, res: Response) => {
    }
 
    res.json({ tweets, page: currentPage })
+}
+
+export const followToggle = async (req: ExtendedRequest, res: Response) => {
+   const { slug } = req.params
+   const loggedUser = req.username as string
+
+
+   const hasUserToFollow = await findUserByUserName(slug)
+   if(!hasUserToFollow) {
+      res.json({ error: "Usuário inexistente" })
+      return
+   }
+
+
+   const check = await checkFollow(loggedUser, slug)
+   if(!check) {
+      const follow = await followUser(loggedUser, slug)
+      res.json({ follow })
+      return
+   } else {
+      await unfollowUser(loggedUser, slug)
+      res.json({ following: false })
+      return
+   }
+
+}
+
+export const editUser = async (req: ExtendedRequest, res: Response) => {
+   const safeData = editUserSchema.safeParse(req.body)
+   if(!safeData.success) {
+      res.json({ error: safeData.error.flatten().fieldErrors })
+      return
+   }
+
+   await updateUserInfo(req.username as string, safeData.data)
+
+
+   res.json({ })
 }
