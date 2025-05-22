@@ -22,7 +22,7 @@ router.put("/user", auth.privateRoute, userController.editUser)
 // router.put("/user/avatar")
 // router.put("/user/cover")
 
-// router.get("/feed")
+router.get("/feed")
 // router.get("/search")
 // router.get("/trending")
 // router.get("/suggestion")
