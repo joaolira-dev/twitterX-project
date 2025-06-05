@@ -1,4 +1,5 @@
 import { Router } from "express";
+import upload from "../middlewares/multer-middleware"
 import * as authController from "../controllers/authController";
 import * as auth from "../middlewares/auth";
 import * as tweetController from "../controllers/tweetController"
@@ -7,6 +8,7 @@ import * as feedController from "../controllers/feedController"
 import * as searchController from "../controllers/searchController"
 import * as trendController from "../controllers/trendController";
 import * as suggestionContrller from "../controllers/suggestionController"
+import * as uploadController from "../controllers/uploadController"
 
 export const router = Router();
 
@@ -23,8 +25,8 @@ router.get("/user/:slug", auth.privateRoute, userController.getUser)
 router.get("/user/:slug/tweets", auth.privateRoute, userController.getUserTweets)
 router.post("/user/:slug/follow", auth.privateRoute, userController.followToggle)
 router.put("/user", auth.privateRoute, userController.editUser)
-// router.put("/user/avatar")
-// router.put("/user/cover")
+router.put("/user/avatar", auth.privateRoute, upload.single("avatar"), uploadController.uploadAvatar)
+router.put("/user/cover", auth.privateRoute, upload.single("cover"), uploadController.uploadCover)
 
 router.get("/feed", auth.privateRoute, feedController.getFeed)
 router.get("/search", auth.privateRoute, searchController.searchTweets)

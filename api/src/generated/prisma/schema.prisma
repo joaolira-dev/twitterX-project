@@ -42,7 +42,9 @@ model TweetLike {
 
 model Follow {
   id          Int    @id @default(autoincrement())
+  // quem segue
   followerId  String
+  // quem esta sendo seguido
   followingId String
 }
 
