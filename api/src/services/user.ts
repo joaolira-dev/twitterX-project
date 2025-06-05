@@ -1,6 +1,6 @@
 import { Prisma } from "../generated/prisma";
 import { prisma } from "../helpers/prisma";
-import { getPublicURL } from "../helpers/url";
+import { avatarURL, coverURL, getPublicURL } from "../helpers/url";
 import { Suggestion } from "../types/suggestion";
 
 export const findUserByEmail = async (email: string) => {
@@ -35,9 +35,9 @@ export const findUserByUserName = async (username: string) => {
   if (user) {
     return {
       ...user,
-      avatar: getPublicURL(user.avatar),
-      cover: getPublicURL(user.cover),
-    };
+      avatar: avatarURL(user.avatar),
+      cover: coverURL(user.cover)
+    }
   }
 
   return null;
@@ -47,8 +47,8 @@ export const createUser = async (data: Prisma.UserCreateInput) => {
   const newUser = await prisma.user.create({ data });
   return {
     ...newUser,
-    avatar: getPublicURL(newUser.avatar),
-    cover: getPublicURL(newUser.cover),
+    avatar: avatarURL(newUser.avatar),
+    cover: coverURL(newUser.cover),
   };
 };
 
@@ -82,7 +82,7 @@ export const checkFollow = async (followerId: string, followingId: string) => {
 
 export const followUser = async (followerId: string, followingId: string) => {
   if (followerId === followingId) {
-    return "Voce nao pode seguir a si mesmo!"
+    return "Voce nao pode seguir a si mesmo!";
   } else {
     const follows = await prisma.follow.create({
       data: {
@@ -104,33 +104,34 @@ export const unfollowUser = async (followerId: string, followingId: string) => {
   return unfollow;
 };
 
-
-export const updateUserInfo = async (username: string, data: Prisma.UserUpdateInput) => {
+export const updateUserInfo = async (
+  username: string,
+  data: Prisma.UserUpdateInput
+) => {
   await prisma.user.update({
     where: { username },
-    data
-  })
-}
+    data,
+  });
+};
 
 export const userFollowing = async (username: string) => {
-  const following = []
+  const following = [];
   const reqFollowing = await prisma.follow.findMany({
     select: {
-      followingId: true
+      followingId: true,
     },
     where: { followerId: username },
   });
-  for(let reqItem of reqFollowing) {
-    following.push(reqItem.followingId)
+  for (let reqItem of reqFollowing) {
+    following.push(reqItem.followingId);
   }
 
-  return following
+  return following;
 };
 
 export const userSuggestions = async (username: string) => {
-  const following = await userFollowing(username)
-  const followingWithMe = [...following, username]
-
+  const following = await userFollowing(username);
+  const followingWithMe = [...following, username];
 
   const suggestions: Suggestion[] = await prisma.$queryRaw`
     SELECT
@@ -140,9 +141,9 @@ export const userSuggestions = async (username: string) => {
       username NOT IN (${followingWithMe.join(",")})
     ORDER BY RANDOM()
     LIMIT 2;
-  `
-  for(let sugIndex in suggestions) {
-    suggestions[sugIndex].avatar = getPublicURL(suggestions[sugIndex].avatar)
+  `;
+  for (let sugIndex in suggestions) {
+    suggestions[sugIndex].avatar = getPublicURL(suggestions[sugIndex].avatar);
   }
-  return suggestions
-}
+  return suggestions;
+};

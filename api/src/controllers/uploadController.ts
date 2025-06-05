@@ -1,8 +1,8 @@
 import e, { Response } from "express";
 import { ExtendedRequest } from "../types/extended-request";
 import { findUserByUserName } from "../services/user";
-import { updateAvatar } from "../services/avatar";
-import { getPublicURL } from "../helpers/url";
+import { avatarURL, coverURL } from "../helpers/url";
+import { updateAvatar, updateCover } from "../services/upload";
 
 export const uploadAvatar = async (req: ExtendedRequest, res: Response) => {
    const file = req.file
@@ -13,8 +13,9 @@ export const uploadAvatar = async (req: ExtendedRequest, res: Response) => {
    }
 
    const user = await findUserByUserName(req.username as string)
-   const avatarUrl = getPublicURL(file.filename)
-   await updateAvatar(user?.username as string, avatarUrl)
+   const avatarName = file.filename
+   const avatarUrl = avatarURL(avatarName)
+   await updateAvatar(user?.username as string, avatarName)
    
    res.status(200).json({
       message: "Avatar atualizado com sucesso!",
@@ -32,11 +33,12 @@ export const uploadCover = async (req: ExtendedRequest, res: Response) => {
    }
 
    const user = await findUserByUserName(req.username as string)
-   const avatarUrl = getPublicURL(file.filename)
-   await updateAvatar(user?.username as string, avatarUrl)
+   const coverName = file.filename
+   const coverUrl = coverURL(coverName)
+   await updateCover(user?.username as string, coverName)
    
    res.status(200).json({
       message: "Cover atualizado com sucesso!",
-      avatarUrl
+      coverUrl
    })  
 }
