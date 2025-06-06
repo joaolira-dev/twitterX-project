@@ -1,6 +1,6 @@
 const Page = () => {
    return (
-      <div>
+      <div className="max-w-lg mx-auto mt-12 px-6">
          Página de Login
       </div>
    )
