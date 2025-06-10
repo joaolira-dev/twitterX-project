@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Input } from "../ui/input";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { Button } from "../ui/button";
 
 const SigninForm = () => {
   const router = useRouter();
@@ -16,16 +16,20 @@ const SigninForm = () => {
 
   return (
     <>
-      <Input placeholder="Digite seu email" value={email} onChange={e => setEmail(e)} />
+      <Input
+        placeholder="Digite seu email"
+        value={email}
+        onChange={(e) => setEmail(e)}
+      />
 
       <Input
         password
         placeholder="Digite sua senha"
         value={password}
-        onChange={e => setPassword(e)}
+        onChange={(e) => setPassword(e)}
       />
 
-      <button onClick={handleSubmitButton}>Entrar</button>
+      <Button label="Entrar" onClick={handleSubmitButton} size={1} />
     </>
   );
 };
