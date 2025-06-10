@@ -1,6 +1,7 @@
 import Logo from "@/components/ui/logo";
 import { NavItem } from "@/components/ui/nav/nav-item";
 import { NavLogout } from "@/components/ui/nav/nav-logout";
+import { NavMyProfile } from "@/components/ui/nav/nav-myprofile";
 import { faHouse, faUser } from "@fortawesome/free-solid-svg-icons";
 import { ReactNode } from "react";
 
@@ -10,7 +11,7 @@ type Props = {
 export default function Layout({ children }: Props) {
   return (
     <main className="min-h-screen flex justify-center mx-auto max-w-7xl">
-      <section className="flex lg:flex flex-col sticky top-0 h-screen w-72 px-3 border-r-2 border-gray-900">
+      <section className="hidden flex lg:flex flex-col sticky top-0 h-screen w-72 px-3 border-r-2 border-gray-900">
         <div className="flex-1 mt-6">
           <Logo size={24} />
           <nav className="mt-11">
@@ -20,6 +21,7 @@ export default function Layout({ children }: Props) {
         </div>
         <div className="mb-6 flex flex-col gap-4">
           <NavLogout/>
+          <NavMyProfile/>
         </div>
       </section>
       <section className="flex-1 max-w-lg">{children}</section>
