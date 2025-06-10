@@ -1,5 +1,5 @@
 import SigninForm from "@/components/auth/signin-form";
-import Logo from "@/components/ui/Logo";
+import Logo from "@/components/ui/logo";
 import Link from "next/link";
 
 const Page = () => {
