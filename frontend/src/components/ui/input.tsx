@@ -37,7 +37,7 @@ export const Input = ({
   return (
     <div
       className={`flex items-center h-14 rounded-3xl border-2 border-gray-700 has-[:focus]:border-white ${
-        filled && "bg-gray-900"
+        filled && "bg-gray-700"
       }`}
     >
       {icon && (
