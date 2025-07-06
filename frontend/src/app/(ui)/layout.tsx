@@ -3,6 +3,7 @@ import { NavItem } from "@/components/ui/nav/nav-item";
 import { NavLogout } from "@/components/ui/nav/nav-logout";
 import { NavMyProfile } from "@/components/ui/nav/nav-myprofile";
 import { SearchInput } from "@/components/ui/search-input";
+import { SuggestionArea } from "@/components/ui/suggestion-area";
 import { TrendingArea } from "@/components/ui/trending-area";
 import { faHouse, faUser } from "@fortawesome/free-solid-svg-icons";
 import { ReactNode } from "react";
@@ -27,9 +28,10 @@ export default function Layout({ children }: Props) {
         </div>
       </section>
       <section className="flex-1 max-w-lg">{children}</section>
-      <section className="flex lg:flex flex-col gap-6 sticky top-0 h-fit w-96 px-8 py-6 border-l-2 border-gray-900">
+      <section className="hidden lg:flex flex-col gap-6 sticky top-0 h-fit w-96 px-8 py-6 border-l-2 border-gray-900">
         <SearchInput hideOnSearch />
         <TrendingArea/>
+        <SuggestionArea/>
       </section>
     </main>
   );
